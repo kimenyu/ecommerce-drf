@@ -1,0 +1,13 @@
+# .gitignore
+
+# SQLite database file
+db.sqlite3
+
+# SQLite database file for Django
+db.sqlite3-journal
+
+#virtual environment\
+env/
+
+# local settings
+.env
