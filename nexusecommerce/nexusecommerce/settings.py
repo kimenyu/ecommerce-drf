@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
+from datetime import timedelta  
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,8 +26,7 @@ SECRET_KEY = 'django-insecure-nx&tf0$(3^6=p02_4kt^$66w)f7f3*cy=b#o-o7obqh6%bw@3y
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -37,16 +38,32 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+	'accounts',
+	'rest_framework',
+	'djoser',
+	"corsheaders",
+ 	'rest_framework_simplejwt',
+	'rest_framework_simplejwt.token_blacklist',
+    'phonenumber_field',
+    # 'products',
+    'drf_yasg',
+    'django_daraja',
+    'rest_framework.authtoken',
+    'rest_auth',
+    'django_filters',
+    'whitenoise.runserver_nostatic',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Add this before other middleware
 ]
 
 ROOT_URLCONF = 'nexusecommerce.urls'
@@ -80,6 +97,9 @@ DATABASES = {
     }
 }
 
+#cors headers
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -120,4 +140,86 @@ STATIC_URL = 'static/'
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/5.0/howto/static-files/
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / "media"
+
+
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'build/static')
+]
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
+
+}
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+
+# REST_FRAMEWORK = {
+#     'DEFAULT_PERMISSION_CLASSES': [
+#         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+#     ]
+# }
+
+# REST_FRAMEWORK = {
+#     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+#     'PAGE_SIZE': 3
+# }
+
+
+
+# AUTHENTICATION_BACKENDS = (
+#     'social_core.backends.google.GoogleOAuth2',
+#     'social_core.backends.facebook.FacebookOAuth2',
+#     'django.contrib.auth.backends.ModelBackend'
+# )
+
+
+
+
+SIMPLE_JWT = {
+    'AUTH_HEADER_TYPES': ('JWT',),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'AUTH_TOKEN_CLASSES': (
+        'rest_framework_simplejwt.tokens.AccessToken',
+    )
+}
+
+# DJOSER = {
+#     'LOGIN_FIELD': 'email',
+#     'USER_CREATE_PASSWORD_RETYPE': True,
+#     'USERNAME_CHANGED_EMAIL_CONFIRMATION': True,
+#     'PASSWORD_CHANGED_EMAIL_CONFIRMATION': True,
+#     'SEND_CONFIRMATION_EMAIL': True,
+#     'SET_USERNAME_RETYPE': True,
+#     'SET_PASSWORD_RETYPE': True,
+#     'PASSWORD_RESET_CONFIRM_URL': 'password/reset/confirm/{uid}/{token}',
+#     'USERNAME_RESET_CONFIRM_URL': 'email/reset/confirm/{uid}/{token}',
+#     'ACTIVATION_URL': 'activate/{uid}/{token}',
+#     'SEND_ACTIVATION_EMAIL': True,
+#     'SOCIAL_AUTH_TOKEN_STRATEGY': 'djoser.social.token.jwt.TokenStrategy',
+#     'SOCIAL_AUTH_ALLOWED_REDIRECT_URIS': ['http://localhost:8000/google', 'http://localhost:8000/facebook'],
+#     'SERIALIZERS': {
+#         'user_create': 'accounts.serializers.UserCreateSerializer',
+#         'user': 'accounts.serializers.UserCreateSerializer',
+#         'current_user': 'accounts.serializers.UserCreateSerializer',
+#         'user_delete': 'djoser.serializers.UserDeleteSerializer',
+#     }
+# }
+
+
+
+
+# Default primary key field type
+# https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+AUTH_USER_MODEL = 'accounts.CustomUser'
