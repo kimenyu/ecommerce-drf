@@ -3,7 +3,7 @@ version: '3.8'
 services:
   db:
     image: postgres:15
-    container_name: nexusecom_db
+    container_name: nexusecommerce_db
     restart: always
     volumes:
       - postgres_data:/var/lib/postgresql/data
@@ -18,7 +18,7 @@ services:
 
   web:
     build: .
-    container_name: nexuseco_web
+    container_name: nexusecommerce_web
     restart: always
     depends_on:
       - db
@@ -33,7 +33,7 @@ services:
     command: >
       sh -c "python manage.py migrate &&
              python manage.py collectstatic --noinput &&
-             gunicorn --bind 0.0.0.0:8000 nexusecommerce.wsgi.application"
+             gunicorn --bind 0.0.0.0:8000 nexusecommerce.wsgi:application"
 
 volumes:
   postgres_data:
