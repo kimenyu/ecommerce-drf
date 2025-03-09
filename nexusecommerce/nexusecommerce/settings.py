@@ -45,7 +45,7 @@ INSTALLED_APPS = [
  	'rest_framework_simplejwt',
 	'rest_framework_simplejwt.token_blacklist',
     'phonenumber_field',
-    # 'products',
+    'products',
     'drf_yasg',
     'django_daraja',
     'rest_framework.authtoken',
